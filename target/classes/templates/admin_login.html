@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <th:block th:replace="common_resources::common_css"></th:block>
+    <th:block th:replace="common_resources::common_js"></th:block>
+    <style>
+        #tu{
+            background: url('/backstage/images/background.jpg') no-repeat center center;
+            background-size:cover;
+        }
+    </style>
+</head>
+
+<body class="hold-transition login-page" id="tu" >
+<div class="login-box" >
+    <div class="login-logo">
+
+
+        <a href="#" style="color: whitesmoke"><b style="color: whitesmoke">Course Selection</b> System</a>
+
+
+    </div>
+    <!-- /.login-logo -->
+    <div class="login-box-body">
+        <p class="login-box-msg">Sign in</p>
+
+        <form action="/user/login" method="post">
+            <div class="form-group has-feedback">
+                <input type="text" name="username" class="form-control" placeholder="Account">
+                <span class="fa  fa-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="password" class="form-control" placeholder="Password">
+                <span class="fa  fa-unlock-alt form-control-feedback"></span>
+            </div>
+            <div class="form-group input-group margin">
+
+                <input type="text" name="code" id="code" class="form-control" placeholder="Verification Code">
+                <span class="input-group-btn">
+                    <img class="btn" id="checkCode"  src="/checkCode" style="width: 75px; height: 35px ;margin: 0;padding: 0;" onclick="change()">
+                </span>
+
+            </div>
+
+            <script type="text/javascript">
+                function change() {
+                    //图片点击事件
+                    //在方法后添加参数的原因是，如果不添加参数，img.src的属性不会改变，此时浏览器不会向服务器发送请求
+                    $("#checkCode").attr("src","/checkCode?"+Math.random());
+
+                }
+            </script>
+            <input type="hidden" name="status" class="form-control" th:value="2">
+            <div class="row ">
+                <!-- /.col -->
+                <div class="col-xs-12  ">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">Sign In</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+    </div>
+    <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<script>
+    $(function() {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+</script>
+</body>
+
+</html>

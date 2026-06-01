@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Add Permission</title>
+    <th:block th:replace="common_resources::common_css"></th:block>
+    <th:block th:replace="common_resources::common_js"></th:block>
+</head>
+
+<body class="hold-transition skin-purple sidebar-mini">
+
+<header th:replace="~{common_header::header}"></header>
+<aside th:replace="~{common_aside::aside}"></aside>
+
+    <div class="wrapper">
+        <div class="content-wrapper">
+
+            <!-- 内容头部 -->
+            <section class="content-header">
+                <h1>
+                    Permission Management
+                    <small>Add Permission</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a th:href="@{/index}"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a th:href="@{/permission/all}">Permission Management</a></li>
+                    <li class="active">Add Permission</li>
+                </ol>
+            </section>
+            <!-- 内容头部 /-->
+
+            <!-- 正文区域 -->
+            <section class="content">
+                <form th:action="@{/permission/add}" method="post">
+
+                        <div class="row data-type">
+                            <div class="panel panel-heading">Permission Information</div>
+                            <div class="col-md-2 title">Permission Name</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" placeholder="Permission Name" name="permission" value="">
+                            </div>
+
+                            <div class="col-md-2 title">Permission URL</div>
+                            <div class="col-md-4 data">
+                                <input type="text" class="form-control" placeholder="Permission URL" name="url" value="">
+                            </div>
+
+                            <div class="col-md-2 title"></div>
+                            <div class="col-md-10 data text-center">
+                                <button type="submit" class="btn bg-maroon">Save</button>
+                                <button type="button" class="btn bg-default" onclick="history.back(-1);">Back</button>
+                            </div>
+
+                        </div>
+<!--                    </div>-->
+                </form>
+                
+            </section>
+            <!-- 正文区域 /-->
+        </div>
+    </div>
+
+<footer th:replace="~{common_footer::footer}"></footer>
+
+</body>
+
+</html>

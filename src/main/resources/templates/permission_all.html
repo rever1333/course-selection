@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Permission Management</title>
+    <th:block th:replace="common_resources::common_css"></th:block>
+    <th:block th:replace="common_resources::common_js"></th:block>
+</head>
+
+<body class="hold-transition skin-purple sidebar-mini">
+
+<header th:replace="~{common_header::header}"></header>
+<aside th:replace="~{common_aside::aside}"></aside>
+
+    <div class="wrapper">
+        <div class="content-wrapper">
+
+            <!-- 内容头部 -->
+            <section class="content-header">
+                <h1>
+                    Permission Management
+                    <small>Permission List</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a th:href="@{/index}"><i class="fa fa-dashboard"></i> Home</a></li>
+                    <li><a th:href="@{/permission/all}">Permission Management</a></li>
+                    <li class="active">Permission List</li>
+                </ol>
+            </section>
+            <!-- 内容头部 /-->
+
+            <!-- 正文区域 -->
+            <section class="content">
+
+                <!-- .box-body -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">List</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+
+                            <!--工具栏-->
+                            <div class="pull-left">
+                                <div class="form-group form-inline">
+                                    <div class="btn-group">
+                                        <a th:href="@{/permission_add}">
+                                            <button type="button" class="btn btn-default" title="New"><i class="fa fa-file-o"></i> New</button>
+
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--工具栏/-->
+
+                            <!--数据List-->
+                            <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                                <thead>
+                                <tr>
+
+                                    <th >Permission Name</th>
+                                    <th >Permission Detail</th>
+                                    <th >Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="permission:${permissionPage.records}">
+<!--                                    <td><input name="ids" type="checkbox"></td>-->
+
+                                    <td th:text="${permission.permission}"></td>
+                                    <td th:text="${permission.url}"></td>
+                                    <td class="text-center">
+                                        <a th:href="@{/permission/edit(pid=${permission.id})}" class="btn bg-green btn-xs">Edit</a>
+                                        <a th:onclick="|javascript:del(${permission.id})|" class="btn bg-red btn-xs">Delete</a>
+                                    </td>
+
+                                </tr>
+                                </tbody>
+                            </table>
+                            <!--数据List/-->
+                            <!--工具栏/-->
+                        </div>
+                        <!-- 数据表格 /-->
+                    </div>
+                    <!-- /.box-body -->
+
+                    <!-- .box-footer-->
+                    <div class="box-footer">
+                        <div class="pull-left">
+                            <div class="form-group form-inline">
+                                Total <span th:text="${permissionPage.pages}"></span> pages，
+                                Total<span th:text="${permissionPage.total}"></span> records
+                            </div>
+                        </div>
+
+                        <div class="box-tools pull-right">
+                            <ul class="pagination"></ul>
+                        </div>
+
+                    </div>
+                    <!-- /.box-footer-->
+                </div>
+            </section>
+            <!-- 正文区域 /-->
+        </div>
+    </div>
+
+<footer th:replace="~{common_footer::footer}"></footer>
+<script th:inline="javascript">
+
+    function del(pid) {
+        if (confirm("Delete this item?")){
+            location.href="/permission/delete?pid="+pid;
+        }
+    }
+        var currentPage=[[${permissionPage.current}]];
+        var pages=[[${permissionPage.pages}]];
+        var context=[[${#servletContext.contextPath}]];
+        // 分pages插件
+
+        $(".pagination").bootstrapPaginator({
+            bootstrapMajorVersion: 3, // bootstrap版本
+            currentPage: currentPage, // 当前pages
+            totalPages: pages, // 总pages数
+            numberOfPages: 5, // 最多显示多少pages
+            itemTexts: function (type, page, current) {
+                switch (type) {
+                    case "first":
+                        return "Home";
+                    case "prev":
+                        return "Previous";
+                    case "next":
+                        return "Next";
+                    case "last":
+                        return "Last";
+                    case "page":
+                        return page;
+                }
+            },
+            onPageClicked: function (event, originalEvent, type, page) { // 点击pages码执行的方法
+                location.href =context+ "/permission/all?page=" + page;
+            }
+        });
+
+</script>
+</body>
+
+</html>

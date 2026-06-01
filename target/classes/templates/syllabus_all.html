@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Teaching Plan</title>
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <th:block th:replace="common_resources::common_css"></th:block>
+    <th:block th:replace="common_resources::common_js"></th:block>
+
+</head>
+
+<body class="hold-transition skin-purple sidebar-mini">
+
+<header th:replace="~{common_header::header}"></header>
+<aside th:replace="common_aside::aside"></aside>
+
+<div class="wrapper">
+
+    <div class="content-wrapper">
+
+        <!-- 内容头部 -->
+        <section class="content-header">
+            <h1>
+                Teaching Plan
+                <small>Teaching Plan List</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/index"><i class="fa fa-dashboard"></i> Home</a></li>
+                <li><a th:href="@{/syllabus/all(teacherName=${#request.session.getAttribute('name')})}">Teaching Plan</a></li>
+                <li class="active">Teaching Plan List</li>
+            </ol>
+        </section>
+        <!-- 内容头部 /-->
+
+        <!-- 正文区域 -->
+        <section class="content">
+
+            <!-- .box-body -->
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <h3 class="box-title">List</h3>
+                </div>
+
+                <div class="box-body">
+
+                    <!-- 数据表格 -->
+                    <div class="table-box">
+
+                        <!--工具栏-->
+                        <div class="pull-left">
+                            <div class="form-group form-inline">
+                                <div class="btn-group">
+                                    <a th:href="@{/course/findAll}">
+                                        <button type="button"  class="btn btn-default" title="New"><i class="fa fa-file-o"></i> New</button>
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--工具栏/-->
+
+                        <!--数据List-->
+                        <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+                            <thead>
+                            <tr>
+
+                                <th >Class Hours</th>
+                                <th >Credits</th>
+                                <th >Location</th>
+                                <th >Enrollment</th>
+                                <th >Course</th>
+                                <th >Teacher</th>
+                                <th >Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr th:each="syllabusVO:${syllabusVOIPage.records}">
+                                <input type="hidden" th:value="${syllabusVO.id}" id="teacherId">
+                                <td th:text="${syllabusVO.class_hour}"></td>
+                                <td th:text="${syllabusVO.credit}"></td>
+                                <td th:text="${syllabusVO.address}"></td>
+                                <td th:text="${syllabusVO.number}"></td>
+                                <td th:text="${syllabusVO.courseName}"></td>
+                                <td th:text="${syllabusVO.teacherName}"></td>
+                                <td class="text-center">
+                                    <a th:href="@{/syllabus/updateById(id=${syllabusVO.id})}">
+                                        <button type="button" class="btn bg-olive btn-xs" >Edit</button>
+                                    </a>
+
+                                    <button type="button" class="btn bg-red btn-xs" th:id="${syllabusVO.id}" onclick="delSyllabus(this.id)">Delete</button>
+
+                                </td>
+                            </tr>
+
+                            </tbody>
+
+                        </table>
+                        <!--数据List/-->
+
+
+                    </div>
+                    <!-- 数据表格 /-->
+
+
+                </div>
+                <!-- /.box-body -->
+
+                <!-- .box-footer-->
+                <div class="box-footer">
+                    <div class="pull-left">
+                        <div class="form-group form-inline">
+                            Total <span th:text="${syllabusVOIPage.pages}"></span> pages，
+                            Total<span th:text="${syllabusVOIPage.total}"></span> records
+                        </div>
+                    </div>
+
+                    <div class="box-tools pull-right">
+                        <ul class="pagination"></ul>
+                    </div>
+
+                </div>
+                <!-- /.box-footer-->
+
+
+
+            </div>
+
+        </section>
+        <!-- 正文区域 /-->
+
+    </div>
+
+</div>
+<script>
+
+    var teacherName=[[${#request.session.getAttribute('name')}]];
+    function delSyllabus(id) {
+        if (confirm("Delete this item?")==true){
+            deleteSyllabus(id);
+        }
+    };
+    function update(studentId) {
+        console.log(studentId);
+        $.get("/student/updateById",{studentId:studentId},function (result){
+
+        })
+    }
+    function deleteSyllabus(syllabusId) {
+        console.log(syllabusId);
+        $.get("/syllabus/delete",{syllabusId:syllabusId},function (result){
+            alert(result);
+            location.href="/syllabus/all?teacherName="+teacherName;
+        })
+    };
+
+</script>
+<footer th:replace="~{common_footer::footer}"></footer>
+<script th:inline="javascript">
+
+    var currentPage=[[${syllabusVOIPage.current}]];
+    var pages=[[${syllabusVOIPage.pages}]];
+    var context=[[${#servletContext.contextPath}]];
+    var teacherName=[[${#request.session.getAttribute('name')}]];
+    // 分pages插件
+
+    $(".pagination").bootstrapPaginator({
+        bootstrapMajorVersion: 3, // bootstrap版本
+        currentPage: currentPage, // 当前pages
+        totalPages: pages, // 总pages数
+        numberOfPages: 5, // 最多显示多少pages
+        itemTexts: function (type, page, current) {
+            switch (type) {
+                case "first":
+                    return "Home";
+                case "prev":
+                    return "Previous";
+                case "next":
+                    return "Next";
+                case "last":
+                    return "Last";
+                case "page":
+                    return page;
+            }
+        },
+        onPageClicked: function (event, originalEvent, type, page) { // 点击pages码执行的方法
+
+                location.href =context+ "/syllabus/all?page=" + page+"&teacherName="+teacherName;
+
+
+
+        }
+    });
+
+</script>
+</body>
+
+</html>
