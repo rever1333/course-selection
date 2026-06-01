@@ -1,26 +1,34 @@
 # Course Selection System
 
-## Overview
-A web-based course selection management system developed using SSM.
+A web-based course selection management system developed using SSM (Spring, Spring MVC, MyBatis).
 
 ## Technology Stack
+
 - Spring
 - Spring MVC
 - MyBatis
 - MySQL
 - JSP
 - Maven
+- Tomcat
 
 ## Features
+
 - User Login
 - Course Selection
 - Course Management
 - Teacher Management
 
-## Environment
-- JDK 8
-- MySQL
-- Tomcat
+## Database
+
+Import `css.sql` before running the project.
+
+## Demo Account
+
+Username: admin
+
+Password: admin
 
 ## Author
+
 rever1333
